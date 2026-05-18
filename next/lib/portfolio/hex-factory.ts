@@ -1,8 +1,5 @@
 import type * as THREE from "three";
 import {
-  DEFAULT_CANVAS_HEIGHT,
-  DROP_HEIGHT_FACTOR,
-  DROP_START_Z,
   DROP_DELAY_FACTOR,
   PORTFOLIO_Z_FRONT,
   QUOTE_Z_BACK,
@@ -30,9 +27,6 @@ export function createPortfolioHex(
   const x = slot.ux * cellSize;
   const y = slot.uy * cellSize;
   const distanceFromCenter = Math.sqrt(x * x + y * y) / cellSize;
-  const dropStartY =
-    (viewportHeight / 2 || DEFAULT_CANVAS_HEIGHT / 2) +
-    cellSize * DROP_HEIGHT_FACTOR;
 
   const mesh = new three.Mesh(
     geometry,
@@ -45,8 +39,9 @@ export function createPortfolioHex(
     }),
   );
 
-  mesh.position.set(x, dropStartY, DROP_START_Z);
+  mesh.position.set(x, y, PORTFOLIO_Z_FRONT);
   mesh.renderOrder = 0;
+  mesh.visible = false;
   scene.add(mesh);
   meshes.push(mesh);
 
@@ -54,17 +49,17 @@ export function createPortfolioHex(
     mesh,
     item,
     posX: x,
-    posY: dropStartY,
-    posZ: DROP_START_Z,
+    posY: y,
+    posZ: PORTFOLIO_Z_FRONT,
     velX: 0,
     velY: 0,
     velZ: 0,
     targetX: x,
     targetY: y,
     targetZ: PORTFOLIO_Z_FRONT,
-    dropDelay: Math.round(index * DROP_DELAY_FACTOR),
+    dropDelay: Math.round(Math.random() * index * DROP_DELAY_FACTOR),
     slotIndex: index,
-    scale: 1,
+    scale: 0,
     scaleTarget: 1,
     scaleVel: 0,
     rotX: 0,
@@ -85,10 +80,6 @@ export function createQuoteHex(
   three: ThreeModule,
   viewportHeight: number,
 ): VgHex {
-  const dropStartY =
-    (viewportHeight / 2 || DEFAULT_CANVAS_HEIGHT / 2) +
-    cellSize * DROP_HEIGHT_FACTOR;
-
   const quoteItem: HexItem = {
     id: QUOTE_HEX_ID,
     name: "Quote",
@@ -108,17 +99,18 @@ export function createQuoteHex(
     }),
   );
 
-  mesh.position.set(0, dropStartY, DROP_START_Z);
+  mesh.position.set(0, 0, QUOTE_Z_BACK);
   mesh.rotation.y = Math.PI;
   mesh.renderOrder = 0;
+  mesh.visible = false;
   scene.add(mesh);
 
   const hex: VgHex = {
     mesh,
     item: quoteItem,
     posX: 0,
-    posY: dropStartY,
-    posZ: DROP_START_Z,
+    posY: 0,
+    posZ: QUOTE_Z_BACK,
     velX: 0,
     velY: 0,
     velZ: 0,
@@ -127,7 +119,7 @@ export function createQuoteHex(
     targetZ: QUOTE_Z_BACK,
     dropDelay: 0,
     slotIndex: -1,
-    scale: 1,
+    scale: 0,
     scaleTarget: 1,
     scaleVel: 0,
     rotX: 0,

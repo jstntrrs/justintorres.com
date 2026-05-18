@@ -22,7 +22,7 @@ export interface HexItem {
   name: string;
   description?: string;
   type: FilterKind;
-  image: string;
+  image?: string;
   accent?: string;
   url?: string;
 }

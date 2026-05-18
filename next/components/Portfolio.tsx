@@ -60,6 +60,7 @@ function matchesFilter(item: HexItem, filter: FilterKind): boolean {
 interface PortfolioProps {
   filter: FilterKind;
   theme: string;
+  selectedItem: HexItem | null;
   onLoadingChange: (loading: boolean) => void;
   onHoverChange: (item: HexItem | null) => void;
   onTipPosChange: (pos: { x: number; y: number }) => void;
@@ -69,6 +70,7 @@ interface PortfolioProps {
 export default function Portfolio({
   filter,
   theme,
+  selectedItem,
   onLoadingChange,
   onHoverChange,
   onTipPosChange,
@@ -141,6 +143,15 @@ export default function Portfolio({
     filterRef.current = filter;
     refitLayout(filter);
   }, [filter]);
+
+  useEffect(() => {
+    // Sync external selectedItem changes with internal selectedHexRef
+    if (!selectedItem && selectedHexRef.current) {
+      selectedHexRef.current.targetZ = PORTFOLIO_Z_FRONT;
+      selectedHexRef.current.mesh.renderOrder = 0;
+      selectedHexRef.current = null;
+    }
+  }, [selectedItem]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -225,7 +236,11 @@ export default function Portfolio({
       meshScaleRef.current = 1;
 
       const uniqueImages = [
-        ...new Set(shuffledItems.map((item) => item.image).filter(Boolean)),
+        ...new Set(
+          shuffledItems
+            .map((item) => item.image)
+            .filter((img): img is string => Boolean(img)),
+        ),
       ];
       await Promise.all(
         uniqueImages.map(async (image) => {

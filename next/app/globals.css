@@ -96,9 +96,7 @@ body
 
 a
 {
-  color: var(--primary);
   text-decoration: none;
-  border-bottom: 3px solid var(--primary);
 }
 
 a:hover

@@ -47,7 +47,10 @@ export function updateHexPhysics(
   hex.scaleVel =
     hex.scaleVel * DAMPING + (hex.scaleTarget - hex.scale) * STIFFNESS;
   hex.scale = Math.max(0, hex.scale + hex.scaleVel);
-  hex.mesh.scale.setScalar(meshScale * hex.scale);
+  // Quote hex maintains fixed size, portfolio hexes scale with grid
+  const finalScale =
+    hex.item.id === QUOTE_HEX_ID ? hex.scale : meshScale * hex.scale;
+  hex.mesh.scale.setScalar(finalScale);
   hex.mesh.visible = hex.scale > 0.01;
 }
 

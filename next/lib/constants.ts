@@ -61,7 +61,7 @@ export const STAR_OPACITY = 0.8;
 export const PORTFOLIO_Z_FRONT = 50;
 export const QUOTE_Z_BACK = -50;
 export const DROP_START_Z = 75;
-export const QUOTE_HEX_SCALE = 3;
+export const QUOTE_HEX_SCALE = 3.5;
 
 // ─── Identifiers ─────────────────────────────────────────────────────────────
 
