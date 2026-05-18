@@ -1,24 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import { type FilterType, type HexItem } from "@/lib/schema";
+import { useState, useEffect } from "react";
+import type { FilterKind, HexItem } from "@/lib/types";
+import {
+  type ThemeMode,
+  THEME_LABELS,
+  initTheme,
+  toggleTheme,
+} from "@/lib/theme";
 import Portfolio from "@/components/Portfolio";
 
 export default function Home() {
-  const [filter, setFilter] = useState<FilterType>("all");
+  const [filter, setFilter] = useState<FilterKind>("all");
   const [loading, setLoading] = useState(true);
   const [hoveredItem, setHoveredItem] = useState<HexItem | null>(null);
   const [tipPos, setTipPos] = useState({ x: 0, y: 0 });
   const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
   const [bioExpanded, setBioExpanded] = useState(true);
+  const [theme, setTheme] = useState<ThemeMode>("auto");
+
+  useEffect(() => {
+    setTheme(initTheme());
+  }, []);
+
+  function handleThemeToggle(): void {
+    setTheme(toggleTheme(theme));
+  }
 
   return (
-    <main className="relative h-screen bg-surface overflow-hidden">
-      {/* Portfolio Layer - Main Canvas */}
+    <main className="relative h-screen bg-background overflow-hidden">
       <div className="absolute inset-0">
         <Portfolio
           filter={filter}
-          onFilterChange={setFilter}
+          theme={theme}
           onLoadingChange={setLoading}
           onHoverChange={setHoveredItem}
           onTipPosChange={setTipPos}
@@ -70,20 +84,17 @@ export default function Home() {
       </div>
 
       {/* Filters */}
-      <div className="absolute top-4 right-4 md:top-10 md:right-6 flex flex-col sm:flex-row gap-2 bg-surface/80 backdrop-blur-sm border border-border shadow-lg pointer-events-auto">
+      <div className="absolute top-4 right-4 md:top-6 md:right-6 flex flex-col sm:flex-row gap-2 bg-surface/80 backdrop-blur-sm border border-border shadow-lg pointer-events-auto">
         <div className="flex gap-2 p-2">
-          {(["all", "skills", "works"] as FilterType[]).map((f) => (
+          {(["all", "skills", "works"] as FilterKind[]).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`
-                px-3 py-1.5 text-md font-medium capitalize transition-all cursor-pointer
-                ${
-                  filter === f
-                    ? "bg-primary text-surface shadow-sm"
-                    : "text-muted hover:text-primary hover:bg-surface/50"
-                }
-              `}
+              className={`px-3 py-1.5 text-md font-medium capitalize transition-all cursor-pointer ${
+                filter === f
+                  ? "bg-primary text-surface shadow-sm"
+                  : "text-muted hover:text-primary hover:bg-surface/50"
+              }`}
             >
               {f}
             </button>
@@ -93,10 +104,18 @@ export default function Home() {
 
       {/* INSTRUCTIONS */}
       {!loading && (
-        <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-surface/60 backdrop-blur-sm border border-border/50 shadow-sm pointer-events-none">
+        <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3 py-1.5 bg-surface/60 backdrop-blur-sm border border-border/50 shadow-sm pointer-events-auto">
           <p className="text-sm text-muted select-none">
-            drag to orbit · scroll to zoom
+            click for details · drag to orbit · scroll to zoom ·
           </p>
+          <button
+            onClick={handleThemeToggle}
+            className="text-sm text-muted hover:text-primary transition-colors cursor-pointer"
+            aria-label={`Theme: ${theme}`}
+            title={`Theme: ${theme}`}
+          >
+            change theme: {THEME_LABELS[theme]}
+          </button>
         </div>
       )}
 

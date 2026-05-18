@@ -25,7 +25,7 @@
 
 @media (prefers-color-scheme: dark)
 {
-  :root
+  :root:not([data-theme])
   {
     --background: #111111;
     --text: #f0f0f0;
@@ -35,6 +35,28 @@
     --muted: #a1a1aa;
     --subtle: #71717a;
   }
+}
+
+[data-theme="light"]
+{
+  --background: #f0f0f0;
+  --text: #424242;
+  --primary: #4242ee;
+  --surface: #ffffff;
+  --border: #e4e4e7;
+  --muted: #71717a;
+  --subtle: #a1a1aa;
+}
+
+[data-theme="dark"]
+{
+  --background: #111111;
+  --text: #f0f0f0;
+  --primary: #eeee42;
+  --surface: #18181b;
+  --border: #27272a;
+  --muted: #a1a1aa;
+  --subtle: #71717a;
 }
 
 body
