@@ -22,7 +22,8 @@ export const SKILLS: HexItem[] = [
   {
     id: "s-beaver",
     name: "Beaver Builder",
-    description: "Industry leading WordPress page builder plugin with a visual drag-and-drop interface. Years of experience writing themes and plugins which integrate into the Beaver ecosystem.",
+    description:
+      "Industry leading WordPress page builder plugin with a visual drag-and-drop interface. Years of experience writing themes and plugins which integrate into the Beaver ecosystem.",
     type: "skill",
     logo: "/skills/beaver-builder.svg",
   },

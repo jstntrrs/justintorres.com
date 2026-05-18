@@ -24,11 +24,11 @@ export const PRIMARY_COLOR = "#facc15";
 export const DROP_SEED = 42;
 export const DROP_DELAY_FACTOR = 1.6;
 export const MAX_CELL_SIZE = 80;
-export const LAYOUT_PADDING = 0.9;
-export const DEFAULT_CANVAS_WIDTH = 600;
-export const DEFAULT_CANVAS_HEIGHT = 500;
+export const LAYOUT_PADDING = 0.5;
+export const DEFAULT_CANVAS_WIDTH = 500;
+export const DEFAULT_CANVAS_HEIGHT = 400;
 export const DROP_HEIGHT_FACTOR = 5;
-export const GRID_ASPECT_RATIO = 1.6; // Width to height ratio (1.6 = golden ratio for horizontal)
+export const GRID_ASPECT_RATIO = 1.6;
 
 // Camera
 export const CAMERA_FOV = 50;

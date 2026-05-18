@@ -222,7 +222,7 @@ function makeHexTex(item: HexItem, ctx: TextureCtx): THREE.CanvasTexture {
   c.clearRect(0, 0, TEX_SIZE, TEX_SIZE);
 
   const img = ctx.logoImages.get(item.logo);
-  
+
   // Clip to hex and draw logo
   c.save();
   // For works: clip to border inset so image aligns with border edge
@@ -230,7 +230,7 @@ function makeHexTex(item: HexItem, ctx: TextureCtx): THREE.CanvasTexture {
   const clipInset = item.type === "work" ? HEX_BORDER_INSET : 1;
   drawHexPath(c, hx, hy, TEX_SIZE, clipInset);
   c.clip();
-  
+
   if (img) {
     // Calculate target area based on type
     let targetSize, pad;
@@ -243,16 +243,16 @@ function makeHexTex(item: HexItem, ctx: TextureCtx): THREE.CanvasTexture {
       pad = TEX_SIZE * LOGO_PAD_FACTOR;
       targetSize = TEX_SIZE - 2 * pad;
     }
-    
+
     // Calculate scale to cover (maintain aspect ratio, fill area completely)
     const scale = Math.max(targetSize / img.width, targetSize / img.height);
     const scaledW = img.width * scale;
     const scaledH = img.height * scale;
-    
+
     // Center the scaled image
     const x = hx - scaledW / 2;
     const y = hy - scaledH / 2;
-    
+
     c.drawImage(img, x, y, scaledW, scaledH);
   } else {
     c.fillStyle = PRIMARY_COLOR;
@@ -300,21 +300,36 @@ function stepVgHex(hex: VgHex, meshScale: number) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function PortfolioNew() {
+interface PortfolioProps {
+  filter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
+  onLoadingChange: (loading: boolean) => void;
+  onHoverChange: (item: HexItem | null) => void;
+  onTipPosChange: (pos: { x: number; y: number }) => void;
+  onSelectedChange: (item: HexItem | null) => void;
+}
+
+export default function Portfolio({
+  filter,
+  onFilterChange,
+  onLoadingChange,
+  onHoverChange,
+  onTipPosChange,
+  onSelectedChange,
+}: PortfolioProps) {
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const hexesRef = useRef<VgHex[]>([]);
-  const filterRef = useRef<FilterType>("all");
+  const filterRef = useRef<FilterType>(filter);
   const meshScaleRef = useRef(1);
   const baseCellSizeRef = useRef(0);
   const viewportRef = useRef({ w: 0, h: 0 });
   const selectedHexRef = useRef<VgHex | null>(null);
 
-  const [filter, setFilter] = useState<FilterType>("all");
-  const [loading, setLoading] = useState(true);
-  const [hoveredItem, setHoveredItem] = useState<HexItem | null>(null);
-  const [tipPos, setTipPos] = useState({ x: 0, y: 0 });
-  const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
-  const [expandPos, setExpandPos] = useState({ x: 0, y: 0 });
+  // Update filter ref when prop changes
+  useEffect(() => {
+    filterRef.current = filter;
+    refitLayout(filter);
+  }, [filter]);
 
   // Refit layout based on filter
   function refitLayout(f: FilterType) {
@@ -364,7 +379,7 @@ export default function PortfolioNew() {
         hex.targetZ = 0;
         hex.mesh.renderOrder = 0;
         selectedHexRef.current = null;
-        setSelectedItem(null);
+        onSelectedChange(null);
       }
     }
   }
@@ -376,15 +391,13 @@ export default function PortfolioNew() {
       selectedHexRef.current.mesh.renderOrder = 0;
       selectedHexRef.current = null;
     }
-    setSelectedItem(null);
+    onSelectedChange(null);
   }
 
   // Apply filter and refit
   function applyFilter(f: FilterType) {
     deselect();
-    filterRef.current = f;
-    setFilter(f);
-    refitLayout(f);
+    onFilterChange(f);
   }
 
   // Setup Three.js scene
@@ -460,6 +473,51 @@ export default function PortfolioNew() {
       const scene = new THREE.Scene();
       scene.add(new THREE.AmbientLight(0xffffff, 1));
 
+      // Create back plane with quote
+      const backCanvas = document.createElement("canvas");
+      backCanvas.width = 2048;
+      backCanvas.height = 1024;
+      const backCtx = backCanvas.getContext("2d")!;
+      // Flip horizontally so text reads correctly when viewed from behind
+      backCtx.translate(backCanvas.width, 0);
+      backCtx.scale(-1, 1);
+      backCtx.fillStyle = PRIMARY_COLOR;
+      backCtx.globalAlpha = 0.08;
+      backCtx.font = "bold 48px system-ui, sans-serif";
+      backCtx.textAlign = "center";
+      backCtx.textBaseline = "middle";
+      backCtx.fillText(
+        '"Somewhere, something incredible',
+        backCanvas.width / 2,
+        backCanvas.height / 2 - 60,
+      );
+      backCtx.fillText(
+        'is waiting to be known."',
+        backCanvas.width / 2,
+        backCanvas.height / 2,
+      );
+      backCtx.font = "italic 32px system-ui, sans-serif";
+      backCtx.fillText(
+        "― Carl Sagan",
+        backCanvas.width / 2,
+        backCanvas.height / 2 + 60,
+      );
+
+      const backTexture = new THREE.CanvasTexture(backCanvas);
+      backTexture.generateMipmaps = false;
+      backTexture.minFilter = THREE.LinearFilter;
+
+      const backPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(width * 2, height * 2),
+        new THREE.MeshBasicMaterial({
+          map: backTexture,
+          transparent: true,
+          side: THREE.BackSide,
+        }),
+      );
+      backPlane.position.z = -1;
+      scene.add(backPlane);
+
       const texCtx: TextureCtx = {
         logoImages: new Map(),
         THREE,
@@ -497,7 +555,7 @@ export default function PortfolioNew() {
           new THREE.MeshBasicMaterial({
             map: makeHexTex(item, texCtx),
             transparent: true,
-            side: THREE.DoubleSide,
+            side: THREE.FrontSide,
           }),
         );
         mesh.position.set(x, dropFromY, 0);
@@ -528,7 +586,7 @@ export default function PortfolioNew() {
 
       hexesRef.current = springHexes;
       refitLayout(filterRef.current);
-      setLoading(false);
+      onLoadingChange(false);
 
       // Mouse interaction
       const mouse = new THREE.Vector2(-9999, -9999);
@@ -543,7 +601,7 @@ export default function PortfolioNew() {
         const rect = container.getBoundingClientRect();
         mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         mouse.y = ((e.clientY - rect.top) / rect.height) * -2 + 1;
-        setTipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+        onTipPosChange({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         if (
           Math.abs(e.clientX - pointerDownX) > DRAG_THRESHOLD ||
           Math.abs(e.clientY - pointerDownY) > DRAG_THRESHOLD
@@ -560,7 +618,7 @@ export default function PortfolioNew() {
 
       function onMouseLeave() {
         mouse.set(-9999, -9999);
-        setHoveredItem(null);
+        onHoverChange(null);
         lastHovered = null;
         if (container) container.style.cursor = "";
       }
@@ -576,7 +634,7 @@ export default function PortfolioNew() {
             selectedHexRef.current.targetZ = 0;
             selectedHexRef.current.mesh.renderOrder = 0;
             selectedHexRef.current = null;
-            setSelectedItem(null);
+            onSelectedChange(null);
           }
           return;
         }
@@ -585,7 +643,7 @@ export default function PortfolioNew() {
           hitHex.targetZ = 0;
           hitHex.mesh.renderOrder = 0;
           selectedHexRef.current = null;
-          setSelectedItem(null);
+          onSelectedChange(null);
           return;
         }
 
@@ -597,17 +655,7 @@ export default function PortfolioNew() {
         hitHex.targetZ = cameraZ * HEX_LIFT_FACTOR;
         hitHex.mesh.renderOrder = 1;
         selectedHexRef.current = hitHex;
-
-        if (container) {
-          const vec = new THREE.Vector3(hitHex.posX, hitHex.posY, hitHex.posZ);
-          vec.project(camera);
-          const rect = container.getBoundingClientRect();
-          setExpandPos({
-            x: ((vec.x + 1) / 2) * rect.width,
-            y: ((-vec.y + 1) / 2) * rect.height,
-          });
-        }
-        setSelectedItem(hitHex.item);
+        onSelectedChange(hitHex.item);
       }
 
       container.addEventListener("mousedown", onMouseDown);
@@ -661,7 +709,7 @@ export default function PortfolioNew() {
               .item as HexItem) ?? null;
           if (hitItem !== lastHovered) {
             lastHovered = hitItem;
-            setHoveredItem(hitItem);
+            onHoverChange(hitItem);
             if (container) container.style.cursor = hitItem ? "pointer" : "";
           }
         }
@@ -678,98 +726,7 @@ export default function PortfolioNew() {
       disposers.forEach((fn) => fn());
       hexesRef.current = [];
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [onLoadingChange, onHoverChange, onTipPosChange, onSelectedChange]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <section className="relative flex flex-col h-full overflow-hidden">
-      {/* Filter bar */}
-      <div className="flex justify-center items-center gap-2 px-4 py-3 border-b border-border shrink-0">
-        {(["all", "skills", "works"] as FilterType[]).map((f) => (
-          <button
-            key={f}
-            onClick={() => applyFilter(f)}
-            className={`
-              px-3 py-1 text-xs capitalize transition-colors cursor-pointer
-              ${
-                filter === f
-                  ? "bg-primary text-surface"
-                  : "border-2 border-border text-muted hover:border-primary hover:text-primary"
-              }
-            `}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* Canvas container */}
-      <div ref={canvasWrapRef} className="relative flex-1">
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="hex-inner w-30 h-34">
-              <img
-                src="me.gif"
-                alt="Loading"
-                className="block w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        )}
-
-        {hoveredItem && !selectedItem && (
-          <div
-            className="absolute z-10 pointer-events-none px-2 py-1 text-xs text-surface bg-primary whitespace-nowrap"
-            style={{ left: tipPos.x + 14, top: tipPos.y - 28 }}
-          >
-            {hoveredItem.name}
-          </div>
-        )}
-
-        {selectedItem && (
-          <div
-            className="absolute z-20 w-56 bg-surface/95 backdrop-blur border border-primary p-3 shadow-lg"
-            style={{
-              bottom: "1rem",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-2">
-              <span className="text-sm font-semibold text-primary leading-tight">
-                {selectedItem.name}
-              </span>
-              <button
-                onClick={deselect}
-                className="shrink-0 text-muted hover:text-primary text-xs leading-none mt-0.5 cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-            {selectedItem.description && (
-              <p className="text-xs text-muted mt-1.5 leading-relaxed">
-                {selectedItem.description}
-              </p>
-            )}
-            {selectedItem.url && (
-              <a
-                href={selectedItem.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 text-xs border border-primary text-primary px-2 py-0.5 hover:bg-primary hover:text-surface transition-colors"
-              >
-                Visit ↗
-              </a>
-            )}
-          </div>
-        )}
-
-        {!loading && (
-          <p className="absolute bottom-2 right-3 text-xs text-muted opacity-40 pointer-events-none select-none">
-            drag to orbit · scroll to zoom
-          </p>
-        )}
-      </div>
-    </section>
-  );
+  return <div ref={canvasWrapRef} className="absolute inset-0" />;
 }
