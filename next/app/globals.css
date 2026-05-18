@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+:root
+{
+  --background: #f0f0f0;
+  --text: #424242;
+  --primary: #4242ee;
+  --surface: #ffffff;
+  --border: #e4e4e7;
+  --muted: #71717a;
+  --subtle: #a1a1aa;
+}
+
+@theme inline
+{
+  --color-background: var(--background);
+  --color-text: var(--text);
+  --color-primary: var(--primary);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --font-sans: var(--font-datatype);
+}
+
+@media (prefers-color-scheme: dark)
+{
+  :root
+  {
+    --background: #111111;
+    --text: #f0f0f0;
+    --primary: #eeee42;
+    --surface: #18181b;
+    --border: #27272a;
+    --muted: #a1a1aa;
+    --subtle: #71717a;
+  }
+}
+
+body
+{
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-datatype), sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+*::-webkit-scrollbar
+{
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track
+{
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb
+{
+  background-color: var(--primary);
+}
+
+@supports not selector(::-webkit-scrollbar)
+{
+  *
+  {
+    scrollbar-color: var(--primary) transparent;
+    scrollbar-width: auto;
+  }
+}
+
+a
+{
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 3px solid var(--primary);
+}
+
+a:hover
+{
+  text-decoration: none;
+}
+
+blockquote
+{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 1em 0;
+  padding: 1em 0 1em 2em;
+  border-left: 12px solid var(--primary);
+}
+
+blockquote p
+{
+  opacity: 0.75;
+}
+
+/* hex-container sizes to hex-inner; hex-tile is absolute so it matches */
+.hex-container
+{
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.hex-tile
+{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: var(--primary);
+}
+
+.hex-inner
+{
+  position: relative;
+  z-index: 1;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  transform: translate(0px, 0px);
+  transition: transform 0.15s ease;
+}
+
+.hex-container:hover .hex-inner
+{
+  transform: translate(-9px, 0);
+}
