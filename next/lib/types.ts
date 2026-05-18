@@ -2,8 +2,8 @@ import type * as THREE from "three";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type PanelKind = "bio" | "portfolio";
-export type FilterKind = "all" | "skills" | "works";
+export type Filter = "all" | "skills" | "works";
+export type ThemeMode = "auto" | "light" | "dark";
 
 export interface TextureCtx {
   images: Map<string, HTMLImageElement | null>;
@@ -18,13 +18,14 @@ export interface ItemRenderConfig {
 }
 
 export interface HexItem {
+  type: Filter;
   id: string;
   name: string;
   description?: string;
-  type: FilterKind;
   image?: string;
   accent?: string;
   url?: string;
+  level?: number;
 }
 
 export interface VgHex {

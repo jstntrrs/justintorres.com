@@ -21,7 +21,7 @@ import {
   PORTFOLIO_Z_FRONT,
   QUOTE_HEX_ID,
 } from "@/lib/constants";
-import type { HexItem, FilterKind, TextureCtx, VgHex } from "@/lib/types";
+import type { HexItem, Filter, TextureCtx, VgHex } from "@/lib/types";
 import { getPrimaryColor } from "@/lib/theme";
 import {
   generateHexGridSlots,
@@ -51,14 +51,14 @@ function shuffleArray<T>(arr: T[], seed: number): T[] {
   return output;
 }
 
-function matchesFilter(item: HexItem, filter: FilterKind): boolean {
+function matchesFilter(item: HexItem, filter: Filter): boolean {
   return filter === "all" || item.type === filter;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
 interface PortfolioProps {
-  filter: FilterKind;
+  filter: Filter;
   theme: string;
   selectedItem: HexItem | null;
   onLoadingChange: (loading: boolean) => void;
@@ -78,14 +78,14 @@ export default function Portfolio({
 }: PortfolioProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hexesRef = useRef<VgHex[]>([]);
-  const filterRef = useRef<FilterKind>(filter);
+  const filterRef = useRef<Filter>(filter);
   const meshScaleRef = useRef(1);
   const baseCellSizeRef = useRef(0);
   const viewportRef = useRef({ w: 0, h: 0 });
   const selectedHexRef = useRef<VgHex | null>(null);
   const hoveredHexRef = useRef<VgHex | null>(null);
 
-  function refitLayout(currentFilter: FilterKind): void {
+  function refitLayout(currentFilter: Filter): void {
     const hexes = hexesRef.current;
     const { w, h } = viewportRef.current;
     if (!hexes.length || !w || !h || !baseCellSizeRef.current) return;

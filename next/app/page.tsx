@@ -1,55 +1,81 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { FilterKind, HexItem } from "@/lib/types";
-import {
-  type ThemeMode,
-  THEME_LABELS,
-  initTheme,
-  toggleTheme,
-} from "@/lib/theme";
+import type { Filter, HexItem, ThemeMode } from "@/lib/types";
+import { THEME_LABELS, initTheme, toggleTheme } from "@/lib/theme";
 import Portfolio from "@/components/Portfolio";
 import Popup from "@/components/Popup";
+import Tooltip from "@/components/Tooltip";
 import { CV, Email, Github, LinkedIn, WhatsApp } from "@/components/SVG";
 
 export default function Home() {
-  const [filter, setFilter] = useState<FilterKind>("all");
+  const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
   const [hoveredItem, setHoveredItem] = useState<HexItem | null>(null);
   const [tipPos, setTipPos] = useState({ x: 0, y: 0 });
   const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
-  const [bioVisible, setBioVisible] = useState(true);
+  const [bioVisible, setBioVisible] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("auto");
-  const [hoveredSocial, setHoveredSocial] = useState<string | null>(null);
-  const [socialTipPos, setSocialTipPos] = useState({ x: 0, y: 0 });
+  const [cvLink, setCvLink] = useState("");
+  const [emailLink, setEmailLink] = useState("");
+  const [whatsappLink, setWhatsappLink] = useState("");
 
   useEffect(() => {
     setTheme(initTheme());
+
+    // obfuscate cv pdf
+    const cvPath =
+      "t" +
+      "o" +
+      "r" +
+      "r" +
+      "e" +
+      "s" +
+      "_" +
+      "j" +
+      "u" +
+      "s" +
+      "t" +
+      "i" +
+      "n" +
+      "_" +
+      "c" +
+      "v" +
+      "." +
+      "p" +
+      "d" +
+      "f";
+    setCvLink(cvPath);
+
+    const protocol = "m" + "a" + "i" + "l" + "t" + "o:";
+    const user = "m" + "e";
+    const domain =
+      "j" +
+      "u" +
+      "s" +
+      "t" +
+      "i" +
+      "n" +
+      "t" +
+      "o" +
+      "r" +
+      "r" +
+      "e" +
+      "s" +
+      "." +
+      "c" +
+      "o" +
+      "m";
+    setEmailLink(protocol + user + "@" + domain);
+
+    const waPrefix = "https://" + "wa" + ".me/";
+    const waNumber =
+      "+" + "3" + "4" + "6" + "0" + "4" + "0" + "0" + "7" + "1" + "7" + "8";
+    setWhatsappLink(waPrefix + waNumber);
   }, []);
 
   function handleThemeToggle(): void {
     setTheme(toggleTheme(theme));
-  }
-
-  function handleSocialMouseEnter(label: string, event: React.MouseEvent): void {
-    setHoveredSocial(label);
-    const rect = event.currentTarget.getBoundingClientRect();
-    setSocialTipPos({
-      x: event.clientX - rect.left + rect.left,
-      y: event.clientY - rect.top + rect.top,
-    });
-  }
-
-  function handleSocialMouseMove(event: React.MouseEvent): void {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setSocialTipPos({
-      x: event.clientX - rect.left + rect.left,
-      y: event.clientY - rect.top + rect.top,
-    });
-  }
-
-  function handleSocialMouseLeave(): void {
-    setHoveredSocial(null);
   }
 
   return (
@@ -157,7 +183,7 @@ export default function Home() {
                 <span className="hidden md:inline">Justin Torres</span>
               </h1>
               <div className="flex gap-2">
-                {(["all", "skills", "works"] as FilterKind[]).map((f) => (
+                {(["all", "skills", "works"] as Filter[]).map((f) => (
                   <button
                     key={f}
                     onClick={() => setFilter(f)}
@@ -177,72 +203,67 @@ export default function Home() {
             {/* Right: Social Links */}
             <ul className="flex gap-3 list-none">
               <li>
-                <a
-                  href="https://justintorres.com/cv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity"
-                  aria-label="Resume"
-                  onMouseEnter={(e) => handleSocialMouseEnter("Resume / CV", e)}
-                  onMouseMove={handleSocialMouseMove}
-                  onMouseLeave={handleSocialMouseLeave}
-                >
-                  <CV className="w-6 h-6" />
-                </a>
+                <Tooltip content="Resume / CV">
+                  <a
+                    href={cvLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:opacity-80 transition-opacity block"
+                    aria-label="Resume / CV"
+                  >
+                    <CV className="w-6 h-6" />
+                  </a>
+                </Tooltip>
               </li>
               <li>
-                <a
-                  href="https://github.com/justintorres"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity"
-                  aria-label="GitHub"
-                  onMouseEnter={(e) => handleSocialMouseEnter("GitHub", e)}
-                  onMouseMove={handleSocialMouseMove}
-                  onMouseLeave={handleSocialMouseLeave}
-                >
-                  <Github className="w-6 h-6" />
-                </a>
+                <Tooltip content="GitHub">
+                  <a
+                    href="https://github.com/justintorres"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:opacity-80 transition-opacity block"
+                    aria-label="GitHub"
+                  >
+                    <Github className="w-6 h-6" />
+                  </a>
+                </Tooltip>
               </li>
               <li>
-                <a
-                  href="https://linkedin.com/in/justintorres"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity"
-                  aria-label="LinkedIn"
-                  onMouseEnter={(e) => handleSocialMouseEnter("LinkedIn", e)}
-                  onMouseMove={handleSocialMouseMove}
-                  onMouseLeave={handleSocialMouseLeave}
-                >
-                  <LinkedIn className="w-6 h-6" />
-                </a>
+                <Tooltip content="LinkedIn">
+                  <a
+                    href="https://linkedin.com/in/justintorres"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:opacity-80 transition-opacity block"
+                    aria-label="LinkedIn"
+                  >
+                    <LinkedIn className="w-6 h-6" />
+                  </a>
+                </Tooltip>
               </li>
               <li>
-                <a
-                  href="mailto:justin@justintorres.com"
-                  className="text-primary hover:opacity-80 transition-opacity"
-                  aria-label="Email"
-                  onMouseEnter={(e) => handleSocialMouseEnter("Email", e)}
-                  onMouseMove={handleSocialMouseMove}
-                  onMouseLeave={handleSocialMouseLeave}
-                >
-                  <Email className="w-6 h-6" />
-                </a>
+                <Tooltip content="Email">
+                  <a
+                    href={emailLink}
+                    className="text-primary hover:opacity-80 transition-opacity block"
+                    aria-label="Email"
+                  >
+                    <Email className="w-6 h-6" />
+                  </a>
+                </Tooltip>
               </li>
               <li>
-                <a
-                  href="https://wa.me/1234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity"
-                  aria-label="WhatsApp"
-                  onMouseEnter={(e) => handleSocialMouseEnter("WhatsApp", e)}
-                  onMouseMove={handleSocialMouseMove}
-                  onMouseLeave={handleSocialMouseLeave}
-                >
-                  <WhatsApp className="w-6 h-6" />
-                </a>
+                <Tooltip content="WhatsApp">
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:opacity-80 transition-opacity block"
+                    aria-label="WhatsApp"
+                  >
+                    <WhatsApp className="w-6 h-6" />
+                  </a>
+                </Tooltip>
               </li>
             </ul>
           </div>
@@ -256,16 +277,6 @@ export default function Home() {
           style={{ left: tipPos.x + 14, top: tipPos.y - 28 }}
         >
           {hoveredItem.name}
-        </div>
-      )}
-
-      {/* SOCIAL TOOLTIP */}
-      {hoveredSocial && (
-        <div
-          className="absolute z-50 pointer-events-none px-2 py-1 text-xs font-medium text-surface bg-primary shadow-sm"
-          style={{ left: socialTipPos.x + 14, top: socialTipPos.y - 28 }}
-        >
-          {hoveredSocial}
         </div>
       )}
 

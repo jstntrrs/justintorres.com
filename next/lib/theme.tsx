@@ -1,6 +1,6 @@
 "use client";
 
-export type ThemeMode = "auto" | "light" | "dark";
+import type { ThemeMode } from "@/lib/types";
 
 const STORAGE_KEY = "theme";
 const CYCLE: ThemeMode[] = ["auto", "light", "dark"];
