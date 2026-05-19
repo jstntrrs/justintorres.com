@@ -51,14 +51,16 @@ export default function Popup({
         style={{ maxWidth }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-7 right-7 z-10 bg-primary text-surface hover:opacity-90 text-sm font-medium px-2 py-1 cursor-pointer transition-opacity"
-          aria-label="Close"
-        >
-          ✕
-        </button>
+        {/* Close button — sticky so it stays visible while content scrolls */}
+        <div className="sticky top-0 z-10 flex justify-end pointer-events-none">
+          <button
+            onClick={onClose}
+            className="pointer-events-auto bg-primary text-surface hover:opacity-90 text-sm font-medium px-2 py-1 cursor-pointer transition-opacity"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
         {children}
       </div>
     </div>

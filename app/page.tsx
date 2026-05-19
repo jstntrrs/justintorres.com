@@ -6,13 +6,23 @@ import { THEME_LABELS, initTheme, toggleTheme } from "@/lib/theme";
 import { useTooltip } from "@/lib/tooltip";
 import Portfolio from "@/components/Portfolio";
 import Popup from "@/components/Popup";
-import { CV, Email, Github, LinkedIn, WhatsApp } from "@/components/SVG";
+import {
+  CV,
+  Email,
+  Github,
+  LinkedIn,
+  WhatsApp,
+  ThemeToggle,
+  HelpCircle,
+  Menu,
+} from "@/components/SVG";
 
 export default function Home() {
   const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
   const [bioVisible, setBioVisible] = useState(false);
+  const [helpVisible, setHelpVisible] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("auto");
   const [cvLink, setCvLink] = useState("");
   const [emailLink, setEmailLink] = useState("");
@@ -107,33 +117,37 @@ export default function Home() {
         </div>
       )}
 
-      {/* INSTRUCTIONS */}
-      {!loading && (
-        <div className="absolute bottom-4 left-4 right-4 flex flex-row justify-center">
-          <div className="flex flex-row flex-wrap justify-center items-center gap-3 px-4 py-2 bg-surface/60 backdrop-blur-sm border border-border/50 shadow-sm pointer-events-auto">
-            <p className="text-xs text-muted select-none">
-              justintorres.com CC-BY-4.0
-            </p>
-            <span className="text-xs text-muted select-none">•</span>
-            <p className="text-xs text-primary select-none">drag to orbit</p>
-            <span className="text-xs text-muted select-none">•</span>
-            <p className="text-xs text-primary select-none">scroll to zoom</p>
-            <span className="text-xs text-muted select-none">•</span>
-            <p className="text-xs text-primary select-none">
-              click for details
-            </p>
-            <span className="text-xs text-muted select-none">•</span>
-            <button
-              onClick={handleThemeToggle}
-              className="text-xs text-primary hover:text-primary transition-colors cursor-pointer"
-              aria-label={`Theme: ${theme}`}
-              title={`Theme: ${theme}`}
-            >
-              theme: {THEME_LABELS[theme]}
-            </button>
-          </div>
+      {/* HELP POPUP */}
+      <Popup
+        isOpen={helpVisible}
+        onClose={() => setHelpVisible(false)}
+        maxWidth="400px"
+      >
+        <div className="p-6 space-y-4">
+          <h3 className="text-lg font-bold text-primary">How to navigate</h3>
+          <ul className="space-y-2 text-sm text-muted">
+            <li>
+              <span className="text-primary font-medium">Drag</span> — orbit the
+              grid
+            </li>
+            <li>
+              <span className="text-primary font-medium">Scroll</span> — zoom in
+              / out
+            </li>
+            <li>
+              <span className="text-primary font-medium">Click a tile</span> —
+              view details
+            </li>
+            <li>
+              <span className="text-primary font-medium">Filter buttons</span> —
+              show skills or works
+            </li>
+          </ul>
+          <p className="text-xs text-muted pt-2 border-t border-border">
+            justintorres.com — CC-BY-4.0
+          </p>
         </div>
-      )}
+      </Popup>
 
       {/* BIOGRAPHY */}
       <Popup
@@ -170,109 +184,133 @@ export default function Home() {
         </div>
       </Popup>
 
-      {/* BAR */}
+      {/* BRAND */}
       {!loading && (
-        <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-6 bg-surface/80 backdrop-blur-sm border-t border-border shadow-lg pointer-events-auto">
-          <div className="flex items-center justify-between gap-4 px-4 py-3">
-            {/* Left: Name and Filters */}
-            <div className="flex items-center gap-4">
-              <h1
-                onClick={() => setBioVisible(!bioVisible)}
-                className="text-lg sm:text-2xl font-bold text-primary cursor-pointer hover:opacity-80 transition-opacity"
-                title="Justin Torres - Click to toggle biography"
-              >
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 pointer-events-auto">
+          <div className="flex flex-row items-center gap-2 px-4 py-3 bg-surface/80 backdrop-blur-sm border-t border-border shadow-lg">
+            <button
+              onClick={() => setBioVisible(!bioVisible)}
+              className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+              aria-label="Justin Torres — click to toggle biography"
+              title="Justin Torres — click to toggle biography"
+            >
+              <Menu className="w-5 h-5 text-primary shrink-0" />
+              <span className="text-lg sm:text-2xl font-bold text-primary">
                 <span className="md:hidden">JT</span>
                 <span className="hidden md:inline">Justin Torres</span>
-              </h1>
-              <div className="flex gap-2">
-                {(["all", "skills", "works"] as Filter[]).map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    className={`px-3 py-1.5 text-sm font-medium capitalize transition-all cursor-pointer ${
-                      filter === f
-                        ? "bg-primary text-surface shadow-sm"
-                        : "text-muted hover:text-primary hover:bg-surface/50"
-                    }`}
-                    title={`Show ${f === "all" ? "all items" : f} in portfolio`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
+              </span>
+            </button>
+            <div className="flex gap-1">
+              {(["all", "skills", "works"] as Filter[]).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-3 py-1.5 text-sm font-medium capitalize transition-all cursor-pointer ${
+                    filter === f
+                      ? "bg-primary text-surface shadow-sm"
+                      : "text-muted hover:text-primary hover:bg-surface/50"
+                  }`}
+                  title={`Show ${f === "all" ? "all items" : f} in portfolio`}
+                >
+                  {f}
+                </button>
+              ))}
             </div>
+          </div>
+        </div>
+      )}
 
-            {/* Right: Social Links */}
-            <ul className="flex gap-3 list-none">
-              <li>
-                <a
-                  href={cvLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity block"
-                  aria-label="Resume / CV"
-                  onMouseEnter={() => showTooltip("Resume / CV")}
-                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
-                  onMouseLeave={hideTooltip}
-                >
-                  <CV className="w-6 h-6" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/jstntrrs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity block"
-                  aria-label="GitHub"
-                  onMouseEnter={() => showTooltip("GitHub")}
-                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
-                  onMouseLeave={hideTooltip}
-                >
-                  <Github className="w-6 h-6" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://linkedin.com/in/justintorres"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity block"
-                  aria-label="LinkedIn"
-                  onMouseEnter={() => showTooltip("LinkedIn")}
-                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
-                  onMouseLeave={hideTooltip}
-                >
-                  <LinkedIn className="w-6 h-6" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href={emailLink}
-                  className="text-primary hover:opacity-80 transition-opacity block"
-                  aria-label="Email"
-                  onMouseEnter={() => showTooltip("Email")}
-                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
-                  onMouseLeave={hideTooltip}
-                >
-                  <Email className="w-6 h-6" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:opacity-80 transition-opacity block"
-                  aria-label="WhatsApp"
-                  onMouseEnter={() => showTooltip("WhatsApp")}
-                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
-                  onMouseLeave={hideTooltip}
-                >
-                  <WhatsApp className="w-6 h-6" />
-                </a>
-              </li>
-            </ul>
+      {/* ICONS */}
+      {!loading && (
+        <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 pointer-events-auto">
+          <div className="flex flex-row items-center gap-2 px-4 py-3 bg-surface/80 backdrop-blur-sm border-t border-border shadow-lg">
+            <div className="flex gap-3">
+              <a
+                href={cvLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:opacity-80 transition-opacity block"
+                aria-label="Resume / CV"
+                onMouseEnter={() => showTooltip("Resume / CV")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <CV className="w-6 h-6" />
+              </a>
+              <a
+                href="https://github.com/jstntrrs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:opacity-80 transition-opacity block"
+                aria-label="GitHub"
+                onMouseEnter={() => showTooltip("GitHub")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <Github className="w-6 h-6" />
+              </a>
+              <a
+                href="https://linkedin.com/in/justintorres"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:opacity-80 transition-opacity block"
+                aria-label="LinkedIn"
+                onMouseEnter={() => showTooltip("LinkedIn")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <LinkedIn className="w-6 h-6" />
+              </a>
+              <a
+                href={emailLink}
+                className="text-primary hover:opacity-80 transition-opacity block"
+                aria-label="Email"
+                onMouseEnter={() => showTooltip("Email")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <Email className="w-6 h-6" />
+              </a>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:opacity-80 transition-opacity block"
+                aria-label="WhatsApp"
+                onMouseEnter={() => showTooltip("WhatsApp")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <WhatsApp className="w-6 h-6" />
+              </a>
+            </div>
+            <div className="w-full md:w-px h-px md:h-6 bg-border" />
+            <div className="flex gap-3">
+              <button
+                onClick={handleThemeToggle}
+                className="text-primary hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label={`Theme: ${theme} — click to toggle`}
+                title={`Theme: ${THEME_LABELS[theme]}`}
+                onMouseEnter={() =>
+                  showTooltip(`Theme: ${THEME_LABELS[theme]}`)
+                }
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <ThemeToggle className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => setHelpVisible(true)}
+                className="text-primary hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label="Help"
+                title="Help"
+                onMouseEnter={() => showTooltip("Help")}
+                onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                onMouseLeave={hideTooltip}
+              >
+                <HelpCircle className="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -304,7 +342,9 @@ export default function Home() {
                         <div
                           className={`h-1.5 ${i <= reached ? "bg-primary" : "bg-border"}`}
                         />
-                        <span className={`text-sm capitalize ${i <= reached ? "text-primary" : "text-muted"}`}>
+                        <span
+                          className={`text-sm capitalize ${i <= reached ? "text-primary" : "text-muted"}`}
+                        >
                           {tier}
                         </span>
                       </div>

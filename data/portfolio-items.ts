@@ -142,7 +142,7 @@ const SKILLS: HexItem[] = [
     description: "Unix-like operating systems",
     type: "skills",
     accent: "#FCC624",
-    image: "/skills/linix.svg",
+    image: "/skills/linux.svg",
     level: "knowledgeable",
   },
   {
@@ -159,7 +159,6 @@ const SKILLS: HexItem[] = [
     name: "Photoshop",
     description: "Image editing software",
     type: "skills",
-    image: "/skills/photoshop.svg",
     level: "knowledgeable",
   },
   {
@@ -277,7 +276,6 @@ const SKILLS: HexItem[] = [
     name: "VSCode",
     description: "Source code editor",
     type: "skills",
-    image: "/skills/vscode.svg",
     level: "knowledgeable",
   },
   {

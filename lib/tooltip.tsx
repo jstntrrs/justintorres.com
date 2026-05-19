@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
   type ReactNode,
 } from "react";
 
@@ -31,6 +32,11 @@ export function useTooltip() {
 export function TooltipProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<string | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(hover: none)").matches);
+  }, []);
 
   const showTooltip = useCallback((content: string) => {
     setContent(content);
@@ -49,10 +55,10 @@ export function TooltipProvider({ children }: { children: ReactNode }) {
       value={{ content, position, showTooltip, hideTooltip, updatePosition }}
     >
       {children}
-      {content && (
+      {!isTouch && content && (
         <div
-          className="fixed z-50 pointer-events-none px-2 py-1 text-xs font-medium text-surface bg-primary shadow-sm -translate-x-1/2"
-          style={{ left: position.x, top: position.y + 30 }}
+          style={{ left: position.x, top: position.y - 10 }}
+          className="fixed z-50 pointer-events-none px-2 py-1 text-xs font-medium text-surface bg-primary shadow-sm -translate-x-1/2 -translate-y-full"
         >
           {content}
         </div>
