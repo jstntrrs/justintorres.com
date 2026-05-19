@@ -97,7 +97,7 @@ export function createItemTexture(
   c2d.clearRect(0, 0, TEX_SIZE, TEX_SIZE);
 
   const config = getItemRenderConfig(item.type);
-  const img = texCtx.images.get(item.image);
+  const img = item.image ? texCtx.images.get(item.image) : undefined;
 
   c2d.save();
   drawHexagonPath(c2d, center, center, TEX_SIZE, config.clipInset);

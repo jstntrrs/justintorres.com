@@ -7,97 +7,116 @@ const SKILLS: HexItem[] = [
     id: "ANSIBLE",
     name: "Ansible",
     description:
-      "Deploy, provision, and manage infrastructure with ease with centralized configuration management and orchestration using YAML playbooks.",
+      "One of the most powerful tools for systems administrators. Deploying, provisioning, and managing infrastructure is made easy using YAML playbooks. I have used playbooks to spin up hosting environments for internal use.",
     type: "skills",
     accent: "#ee0000",
     image: "/skills/ansible.svg",
+    level: "beginner",
   },
   {
     id: "APACHE",
     name: "Apache HTTP Server",
     description:
-      "Open-source web server software with roughly 25% market share and is commonly used in shared hosting environments.",
+      "Most commonly used in shared hosting environments, my experience with Apache HTTP Server includes configuring .htaccess files for URL rewriting, access control, and performance optimizations, as well as managing virtual hosts.",
     type: "skills",
     accent: "#d22128",
     image: "/skills/apache.svg",
+    level: "knowledgeable",
   },
   {
     id: "BEAVER",
     name: "Beaver Builder",
     description:
-      "Industry leading WordPress page builder plugin with a visual drag-and-drop interface. Years of experience writing themes and plugins which integrate into the Beaver ecosystem.",
+      "I have been worked extensively with Beaver Builder, an industry-leading WordPress page builder plugin with a visual drag-and-drop interface, for more than 5 years. My work includes the full Beaver Builder ecosystem: core plugin, Beaver Themer, and child theme framework.",
     type: "skills",
+    level: "expert",
   },
   {
     id: "CSS",
-    name: "CSS",
-    description: "Cascading Style Sheets",
+    name: "Cascading Style Sheets",
+    description:
+      "CSS is one of my favorite web development disciplines as it gives the web its flavor. I have extensive experience with tried and true techniques: cross-browser compatibility, efficient selectors, CSS Grid, Flexbox, variables, and more. The specification is always evolving and I look forward to rolling out new features as they are adopted.",
     type: "skills",
     accent: "#663399",
     image: "/skills/css.svg",
+    level: "expert",
   },
   {
     id: "GSAP",
-    name: "GSAP",
-    description: "JavaScript animation library",
+    name: "Greensock Animation Platform",
+    description:
+      "A powerful JS library for creating high-performance, complex, and cross-browser animations. My experience with GSAP has mostly been limited to enhancing static webpages with interactive animation elements, but this tool is capable of so much more. Whenever the opportunity to elevate a project with animation presents itself, GSAP is my go-to solution.",
     type: "skills",
     accent: "#0AE448",
     image: "/skills/gsap.svg",
+    level: "beginner",
   },
   {
     id: "GH",
     name: "Github",
-    description: "Version control system",
+    description:
+      "Github is the preferred source code repository platform and has evolved over the years to include a wide range of features. My experience just barely scratches the surface of what Github can do, but I have been putting the effort of learning more about how to improve my workflow with Actions, Copilot, and Codespaces.",
     type: "skills",
     accent: "#181717",
     image: "/skills/github.svg",
+    level: "beginner",
   },
   {
     id: "HTML",
     name: "HTML",
-    description:
-      "The foundational language of browsers, HyperText Markup Language is ubiquitous with the web.",
+    description: "The foundational language of browsers. Not much else to say.",
     type: "skills",
     accent: "#E34F26",
     image: "/skills/html5.svg",
+    level: "expert",
   },
   {
     id: "In",
     name: "Indesign",
-    description: "Desktop publishing software",
+    description:
+      "My knowledge of Indesign is primarily focused on adapting existing visual elements for the web: Fine-tuning anchor points, cleaning up any artifacts, and optimizing designs for use in webfonts or animations.",
     type: "skills",
+    level: "beginner",
   },
   {
     id: "JS",
     name: "JavaScript",
-    description: "Programming language",
+    description:
+      "One of the most controversial scripting languages and the backbone of the interactive web. Manipulating the DOM, handling events, and adding effects that CSS hasn't caught up with yet are some of the examples of how I have used JS.",
     type: "skills",
     accent: "#F7DF1E",
     image: "/skills/javascript.svg",
+    level: "expert",
   },
   {
     id: "jQ",
     name: "jQuery",
-    description: "JavaScript library",
+    description:
+      "A once ubiquitous extension of JavaScript that used to make DOM manipulation and event handling easier across browsers. It is still used in legacy projects and WordPress, and I have had to go back and rework jQuery code to be up to date with the best practices.",
     type: "skills",
     accent: "#0769AD",
     image: "/skills/jquery.svg",
+    level: "expert",
   },
   {
     id: "JSON",
     name: "JSON",
-    description: "Data interchange format",
+    description:
+      "A lightweight data-interchange format that is the gold standard of modern APIs and data storage.",
     type: "skills",
     accent: "#000000",
     image: "/skills/json.svg",
+    level: "expert",
   },
   {
     id: "LH",
     name: "Lighthouse",
-    description: "Website performance and SEO auditing tool",
+    description:
+      "Essential tool for auditing site performance, accessibility, and best SEO practices. ",
     type: "skills",
     accent: "#F44B21",
     image: "/skills/lighthouse.svg",
+    level: "knowledgeable",
   },
   {
     id: "MYSQL",
@@ -106,6 +125,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#4479A1",
     image: "/skills/mysql.svg",
+    level: "knowledgeable",
   },
   {
     id: "nginx",
@@ -114,6 +134,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#009639",
     image: "/skills/nginx.svg",
+    level: "beginner",
   },
   {
     id: "LINUX",
@@ -122,6 +143,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#FCC624",
     image: "/skills/linix.svg",
+    level: "knowledgeable",
   },
   {
     id: "NODE",
@@ -130,6 +152,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#5FA04E",
     image: "/skills/nodedotjs.svg",
+    level: "knowledgeable",
   },
   {
     id: "Ps",
@@ -137,6 +160,7 @@ const SKILLS: HexItem[] = [
     description: "Image editing software",
     type: "skills",
     image: "/skills/photoshop.svg",
+    level: "knowledgeable",
   },
   {
     id: "PHP",
@@ -145,6 +169,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#777BB4",
     image: "/skills/php.svg",
+    level: "expert",
   },
   {
     id: "PY",
@@ -153,6 +178,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#3776AB",
     image: "/skills/python.svg",
+    level: "beginner",
   },
   {
     id: "TS",
@@ -161,6 +187,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#3178C6",
     image: "/skills/typescript.svg",
+    level: "knowledgeable",
   },
   {
     id: "NJS",
@@ -169,6 +196,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#000000",
     image: "/skills/nextdotjs.svg",
+    level: "beginner",
   },
   {
     id: "PSQL",
@@ -177,6 +205,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#4169E1",
     image: "/skills/postgresql.svg",
+    level: "beginner",
   },
   {
     id: "GATSBY",
@@ -185,6 +214,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#663399",
     image: "/skills/gatsby.svg",
+    level: "beginner",
   },
   {
     id: "CLAUDE",
@@ -193,6 +223,7 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#000000",
     image: "/skills/claude.svg",
+    level: "knowledgeable",
   },
   {
     id: "REACT",
@@ -201,39 +232,45 @@ const SKILLS: HexItem[] = [
     type: "skills",
     accent: "#61DAFB",
     image: "/skills/react.svg",
+    level: "knowledgeable",
   },
   {
     id: "MQ",
-    name: "Responsive",
+    name: "Responsive Web Design",
     description: "Design approach for optimal viewing on various devices",
     type: "skills",
+    level: "expert",
   },
   {
     id: "REST",
     name: "REST",
     description: "Representational State Transfer",
     type: "skills",
+    level: "knowledgeable",
   },
   {
     id: "SEO",
     name: "SEO",
     description: "Search Engine Optimization",
     type: "skills",
+    level: "knowledgeable",
   },
   {
     id: "SVG",
-    name: "SVG",
-    description: "Scalable Vector Graphics",
+    name: "Scalable Vector Graphics",
+    description: "I really enjoy using SVGs to make high-quality graphics that can be easily scaled, styled, and animated in real-time. Their versatility makes them ideal for pretty much every scenario where graphics are needed on the web. Depending on the project, SVGs can be packaged with the HTML, served as separate files, or converted into an icon font.",
     type: "skills",
     accent: "#FFB13B",
     image: "/skills/svg.svg",
+    level: "expert",
   },
   {
     id: "ROOTS",
     name: "Roots",
-    description: "WordPress development framework",
+    description: "An emerging, open-source WordPress stack that brings much needed modernization to WordPress development. Trellis, Bedrock, and Sage are promising tools and I have been experimenting with them in personal projects but haven't had the opportunity to use them in a production environment yet.",
     type: "skills",
     image: "/skills/roots.svg",
+    level: "beginner",
   },
   {
     id: "CODE",
@@ -241,13 +278,15 @@ const SKILLS: HexItem[] = [
     description: "Source code editor",
     type: "skills",
     image: "/skills/vscode.svg",
+    level: "knowledgeable",
   },
   {
     id: "WP",
     name: "WordPress",
-    description: "Content management system",
+    description: "I have been working with WordPress for my entire professional career and have produced too many projects to list. My knowledge of WordPress covers the full stack: server configuration, database management, and theme and plugin development. WordPress is generally preferred since most clients are familiar with it and I work on tailoring each environment to fit the specifications of the project.",
     type: "skills",
     image: "/skills/wordpress.svg",
+    level: "expert",
   },
 ];
 
