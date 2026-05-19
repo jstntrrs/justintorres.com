@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: "Justin Torres",
   description:
     "Official website and interactive portfolio of Justin Torres, internet enthusiast.",
-  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

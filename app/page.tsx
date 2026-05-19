@@ -96,7 +96,7 @@ export default function Home() {
               <div className="hex-tile" />
               <div className="hex-inner-inset">
                 <img
-                  src="me.gif"
+                  src="/me.gif"
                   alt="Loading"
                   className="size-full object-cover"
                 />
@@ -145,7 +145,7 @@ export default function Home() {
           {/* Photo Left */}
           <div className="shrink-0 w-full sm:w-60">
             <img
-              src="me.jpg"
+              src="/me.jpg"
               alt="Justin Torres"
               className="w-full h-auto rounded-md object-cover"
             />
