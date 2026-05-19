@@ -15,19 +15,25 @@ export default function Popup({
   children,
   maxWidth = "600px",
 }: PopupProps) {
-  // Prevent scrolling when popup is open
   useEffect(() => {
+    // Prevent scrolling when popup is open
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
 
-    // Cleanup on unmount
+    // Close on Escape key
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -37,7 +43,7 @@ export default function Popup({
       onClick={onClose}
     >
       {/* Blur background overlay */}
-      <div className="absolute inset-0 bg-background/30 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-background/10 backdrop-blur-sm" />
 
       {/* Content */}
       <div

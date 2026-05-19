@@ -3,27 +3,25 @@
 import { useState, useEffect } from "react";
 import type { Filter, HexItem, ThemeMode } from "@/lib/types";
 import { THEME_LABELS, initTheme, toggleTheme } from "@/lib/theme";
+import { useTooltip } from "@/lib/tooltip";
 import Portfolio from "@/components/Portfolio";
 import Popup from "@/components/Popup";
-import Tooltip from "@/components/Tooltip";
 import { CV, Email, Github, LinkedIn, WhatsApp } from "@/components/SVG";
 
 export default function Home() {
   const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
-  const [hoveredItem, setHoveredItem] = useState<HexItem | null>(null);
-  const [tipPos, setTipPos] = useState({ x: 0, y: 0 });
   const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
   const [bioVisible, setBioVisible] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("auto");
   const [cvLink, setCvLink] = useState("");
   const [emailLink, setEmailLink] = useState("");
   const [whatsappLink, setWhatsappLink] = useState("");
+  const { showTooltip, hideTooltip, updatePosition } = useTooltip();
 
   useEffect(() => {
     setTheme(initTheme());
 
-    // obfuscate cv pdf
     const cvPath =
       "t" +
       "o" +
@@ -86,21 +84,25 @@ export default function Home() {
           theme={theme}
           selectedItem={selectedItem}
           onLoadingChange={setLoading}
-          onHoverChange={setHoveredItem}
-          onTipPosChange={setTipPos}
           onSelectedChange={setSelectedItem}
         />
       </div>
 
       {/* LOADING */}
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="hex-inner w-60 h-64">
-            <img
-              src="me.gif"
-              alt="Loading"
-              className="block w-full h-full object-cover"
-            />
+        <div className="absolute inset-0 grid place-items-center pointer-events-none">
+          <div className="flex flex-col items-center gap-4">
+            <div className="hex-container w-60 h-64">
+              <div className="hex-tile" />
+              <div className="hex-inner-inset">
+                <img
+                  src="me.gif"
+                  alt="Loading"
+                  className="size-full object-cover"
+                />
+              </div>
+            </div>
+            <h4 className="text-lg font-bold text-primary">Loading...</h4>
           </div>
         </div>
       )}
@@ -203,80 +205,75 @@ export default function Home() {
             {/* Right: Social Links */}
             <ul className="flex gap-3 list-none">
               <li>
-                <Tooltip content="Resume / CV">
-                  <a
-                    href={cvLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:opacity-80 transition-opacity block"
-                    aria-label="Resume / CV"
-                  >
-                    <CV className="w-6 h-6" />
-                  </a>
-                </Tooltip>
+                <a
+                  href={cvLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:opacity-80 transition-opacity block"
+                  aria-label="Resume / CV"
+                  onMouseEnter={() => showTooltip("Resume / CV")}
+                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                  onMouseLeave={hideTooltip}
+                >
+                  <CV className="w-6 h-6" />
+                </a>
               </li>
               <li>
-                <Tooltip content="GitHub">
-                  <a
-                    href="https://github.com/justintorres"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:opacity-80 transition-opacity block"
-                    aria-label="GitHub"
-                  >
-                    <Github className="w-6 h-6" />
-                  </a>
-                </Tooltip>
+                <a
+                  href="https://github.com/justintorres"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:opacity-80 transition-opacity block"
+                  aria-label="GitHub"
+                  onMouseEnter={() => showTooltip("GitHub")}
+                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                  onMouseLeave={hideTooltip}
+                >
+                  <Github className="w-6 h-6" />
+                </a>
               </li>
               <li>
-                <Tooltip content="LinkedIn">
-                  <a
-                    href="https://linkedin.com/in/justintorres"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:opacity-80 transition-opacity block"
-                    aria-label="LinkedIn"
-                  >
-                    <LinkedIn className="w-6 h-6" />
-                  </a>
-                </Tooltip>
+                <a
+                  href="https://linkedin.com/in/justintorres"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:opacity-80 transition-opacity block"
+                  aria-label="LinkedIn"
+                  onMouseEnter={() => showTooltip("LinkedIn")}
+                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                  onMouseLeave={hideTooltip}
+                >
+                  <LinkedIn className="w-6 h-6" />
+                </a>
               </li>
               <li>
-                <Tooltip content="Email">
-                  <a
-                    href={emailLink}
-                    className="text-primary hover:opacity-80 transition-opacity block"
-                    aria-label="Email"
-                  >
-                    <Email className="w-6 h-6" />
-                  </a>
-                </Tooltip>
+                <a
+                  href={emailLink}
+                  className="text-primary hover:opacity-80 transition-opacity block"
+                  aria-label="Email"
+                  onMouseEnter={() => showTooltip("Email")}
+                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                  onMouseLeave={hideTooltip}
+                >
+                  <Email className="w-6 h-6" />
+                </a>
               </li>
               <li>
-                <Tooltip content="WhatsApp">
-                  <a
-                    href={whatsappLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:opacity-80 transition-opacity block"
-                    aria-label="WhatsApp"
-                  >
-                    <WhatsApp className="w-6 h-6" />
-                  </a>
-                </Tooltip>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:opacity-80 transition-opacity block"
+                  aria-label="WhatsApp"
+                  onMouseEnter={() => showTooltip("WhatsApp")}
+                  onMouseMove={(e) => updatePosition(e.clientX, e.clientY)}
+                  onMouseLeave={hideTooltip}
+                >
+                  <WhatsApp className="w-6 h-6" />
+                </a>
               </li>
             </ul>
           </div>
-        </div>
-      )}
-
-      {/* TOOLTIP */}
-      {hoveredItem && !selectedItem && (
-        <div
-          className="absolute z-10 pointer-events-none px-2 py-1 text-xs font-medium text-surface bg-primary shadow-sm"
-          style={{ left: tipPos.x + 14, top: tipPos.y - 28 }}
-        >
-          {hoveredItem.name}
         </div>
       )}
 
@@ -287,7 +284,7 @@ export default function Home() {
         maxWidth="600px"
       >
         {selectedItem && (
-          <div className="p-6 space-y-3">
+          <div className="p-6 space-y-6">
             <h3 className="text-3xl font-semibold text-primary leading-tight">
               {selectedItem.name}
             </h3>
@@ -296,6 +293,25 @@ export default function Home() {
                 {selectedItem.description}
               </p>
             )}
+            {selectedItem.level !== undefined &&
+              (() => {
+                const order = ["beginner", "knowledgeable", "expert"] as const;
+                const reached = order.indexOf(selectedItem.level!);
+                return (
+                  <div className="flex items-center gap-1.5">
+                    {order.map((tier, i) => (
+                      <div key={tier} className="flex-1 flex flex-col gap-1">
+                        <div
+                          className={`h-1.5 ${i <= reached ? "bg-primary" : "bg-border"}`}
+                        />
+                        <span className={`text-sm capitalize ${i <= reached ? "text-primary" : "text-muted"}`}>
+                          {tier}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             {selectedItem.url && (
               <a
                 href={selectedItem.url}

@@ -4,6 +4,7 @@ import type * as THREE from "three";
 
 export type Filter = "all" | "skills" | "works";
 export type ThemeMode = "auto" | "light" | "dark";
+export type Level = "beginner" | "knowledgeable" | "expert";
 
 export interface TextureCtx {
   images: Map<string, HTMLImageElement | null>;
@@ -25,7 +26,7 @@ export interface HexItem {
   image?: string;
   accent?: string;
   url?: string;
-  level?: number;
+  level?: Level;
 }
 
 export interface VgHex {

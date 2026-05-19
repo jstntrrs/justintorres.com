@@ -51,9 +51,9 @@ export const MAX_HEX_ROTATION = Math.PI / 6;
 
 // ─── Starfield ───────────────────────────────────────────────────────────────
 
-export const STAR_COUNT = 1000;
-export const STAR_RADIUS = 1000;
-export const STAR_SIZE = 2;
+export const STAR_COUNT = 1500;
+export const STAR_RADIUS = 1500;
+export const STAR_SIZE = [1, 1, 1, 2, 2, 2, 3, 4, 6];
 export const STAR_OPACITY = 0.8;
 
 // ─── Z-Axis Positioning ──────────────────────────────────────────────────────

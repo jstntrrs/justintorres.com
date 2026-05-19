@@ -46,28 +46,38 @@ export function createHexGeometry(
 export function createStarfield(
   three: ThreeModule,
   primaryColor: string,
-): THREE.Points {
-  const positions = new Float32Array(STAR_COUNT * 3);
+): THREE.Group {
+  const group = new three.Group();
+  const starsPerSize = Math.floor(STAR_COUNT / STAR_SIZE.length);
 
-  for (let i = 0; i < STAR_COUNT; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
+  STAR_SIZE.forEach((size, si) => {
+    const count =
+      si === STAR_SIZE.length - 1
+        ? STAR_COUNT - starsPerSize * si
+        : starsPerSize;
 
-    positions[i * 3] = STAR_RADIUS * Math.sin(phi) * Math.cos(theta);
-    positions[i * 3 + 1] = STAR_RADIUS * Math.sin(phi) * Math.sin(theta);
-    positions[i * 3 + 2] = STAR_RADIUS * Math.cos(phi);
-  }
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      positions[i * 3] = STAR_RADIUS * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = STAR_RADIUS * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = STAR_RADIUS * Math.cos(phi);
+    }
 
-  const geometry = new three.BufferGeometry();
-  geometry.setAttribute("position", new three.BufferAttribute(positions, 3));
+    const geometry = new three.BufferGeometry();
+    geometry.setAttribute("position", new three.BufferAttribute(positions, 3));
 
-  const material = new three.PointsMaterial({
-    color: primaryColor,
-    size: STAR_SIZE,
-    transparent: true,
-    opacity: STAR_OPACITY,
-    sizeAttenuation: false,
+    const material = new three.PointsMaterial({
+      color: primaryColor,
+      size,
+      transparent: true,
+      opacity: STAR_OPACITY,
+      sizeAttenuation: false,
+    });
+
+    group.add(new three.Points(geometry, material));
   });
 
-  return new three.Points(geometry, material);
+  return group;
 }

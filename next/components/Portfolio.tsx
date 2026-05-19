@@ -33,6 +33,7 @@ import {
   createPortfolioHex,
   createQuoteHex,
 } from "@/lib/portfolio";
+import { useTooltip } from "@/lib/tooltip";
 
 type ThreeModule = typeof THREE;
 
@@ -62,8 +63,6 @@ interface PortfolioProps {
   theme: string;
   selectedItem: HexItem | null;
   onLoadingChange: (loading: boolean) => void;
-  onHoverChange: (item: HexItem | null) => void;
-  onTipPosChange: (pos: { x: number; y: number }) => void;
   onSelectedChange: (item: HexItem | null) => void;
 }
 
@@ -72,8 +71,6 @@ export default function Portfolio({
   theme,
   selectedItem,
   onLoadingChange,
-  onHoverChange,
-  onTipPosChange,
   onSelectedChange,
 }: PortfolioProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -84,6 +81,7 @@ export default function Portfolio({
   const viewportRef = useRef({ w: 0, h: 0 });
   const selectedHexRef = useRef<VgHex | null>(null);
   const hoveredHexRef = useRef<VgHex | null>(null);
+  const { showTooltip, hideTooltip, updatePosition } = useTooltip();
 
   function refitLayout(currentFilter: Filter): void {
     const hexes = hexesRef.current;
@@ -226,10 +224,12 @@ export default function Portfolio({
         THREE: three,
         primaryColor,
       };
+
       const shuffledItems = shuffleArray(
         PORTFOLIO_ITEMS,
         Math.random() * 0xffffffff,
       );
+
       const slots = generateHexGridSlots(shuffledItems.length);
       const cellSize = calculateCellSize(slots, width, height);
       baseCellSizeRef.current = cellSize;
@@ -288,10 +288,7 @@ export default function Portfolio({
         const rect = container.getBoundingClientRect();
         pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
         pointer.y = ((event.clientY - rect.top) / rect.height) * -2 + 1;
-        onTipPosChange({
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top,
-        });
+        updatePosition(event.clientX - rect.left, event.clientY - rect.top);
 
         if (
           Math.abs(event.clientX - dragStartX) > DRAG_THRESHOLD ||
@@ -316,7 +313,7 @@ export default function Portfolio({
           hoveredHexRef.current.targetZ = PORTFOLIO_Z_FRONT;
         }
         hoveredHexRef.current = null;
-        onHoverChange(null);
+        hideTooltip();
         if (container) container.style.cursor = "";
       }
 
@@ -450,7 +447,12 @@ export default function Portfolio({
               hoveredHexRef.current = null;
             }
 
-            onHoverChange(hitHex?.item ?? null);
+            // Show or hide tooltip based on hitHex
+            if (hitHex?.item) {
+              showTooltip(hitHex.item.name);
+            } else {
+              hideTooltip();
+            }
             if (container) container.style.cursor = hitHex ? "pointer" : "";
           }
         }
@@ -467,7 +469,14 @@ export default function Portfolio({
       cleanups.forEach((fn) => fn());
       hexesRef.current = [];
     };
-  }, [theme, onLoadingChange, onHoverChange, onTipPosChange, onSelectedChange]);
+  }, [
+    theme,
+    onLoadingChange,
+    onSelectedChange,
+    showTooltip,
+    hideTooltip,
+    updatePosition,
+  ]);
 
   return <div ref={containerRef} className="absolute inset-0" />;
 }
