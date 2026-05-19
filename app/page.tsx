@@ -220,7 +220,7 @@ export default function Home() {
               </li>
               <li>
                 <a
-                  href="https://github.com/justintorres"
+                  href="https://github.com/jstntrrs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:opacity-80 transition-opacity block"
