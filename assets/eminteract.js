@@ -1,1 +1,0 @@
-document.addEventListener('DOMContentLoaded', function () {const a = document.getElementById('eminteract');const c = [109, 97, 105, 108, 116, 111, 58, 105, 110, 102, 111, 64, 106, 117, 115, 116, 105, 110, 116, 111, 114, 114, 101, 115, 46, 99, 111, 109];const e = c.map(c => String.fromCharCode(c)).join('');a.setAttribute('href', e);});
