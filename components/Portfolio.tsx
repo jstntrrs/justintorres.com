@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import type * as THREE from "three";
-import { PORTFOLIO_ITEMS } from "@/data/portfolio-items";
 import {
+  SKILLS,
+  WORKS,
   DEFAULT_CANVAS_WIDTH,
   DEFAULT_CANVAS_HEIGHT,
   CAMERA_FOV,
@@ -22,8 +23,8 @@ import {
   QUOTE_HEX_ID,
 } from "@/lib/constants";
 import type { HexItem, Filter, TextureCtx, VgHex } from "@/lib/types";
-import { getPrimaryColor } from "@/lib/theme";
 import {
+  getPrimaryColor,
   generateHexGridSlots,
   calculateCellSize,
   loadImage,
@@ -32,10 +33,12 @@ import {
   updateHexPhysics,
   createPortfolioHex,
   createQuoteHex,
-} from "@/lib/portfolio";
-import { useTooltip } from "@/lib/tooltip";
+} from "@/lib/client";
+import { useTooltip } from "@/lib/context";
 
 type ThreeModule = typeof THREE;
+
+const PORTFOLIO_ITEMS = [...SKILLS, ...WORKS];
 
 // ─── Utilities ───────────────────────────────────────────────────────────────
 

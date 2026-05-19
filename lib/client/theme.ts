@@ -1,15 +1,7 @@
 "use client";
 
 import type { ThemeMode } from "@/lib/types";
-
-const STORAGE_KEY = "theme";
-const CYCLE: ThemeMode[] = ["auto", "light", "dark"];
-
-export const THEME_LABELS: Record<ThemeMode, string> = {
-  auto: "auto",
-  light: "light",
-  dark: "dark",
-};
+import { STORAGE_KEY, CYCLE } from "@/lib/constants/theme";
 
 function apply(mode: ThemeMode): void {
   if (mode === "auto") {
@@ -20,14 +12,12 @@ function apply(mode: ThemeMode): void {
   localStorage.setItem(STORAGE_KEY, mode);
 }
 
-/** Reads stored preference, applies it, and returns the active mode. */
 export function initTheme(): ThemeMode {
   const stored = (localStorage.getItem(STORAGE_KEY) as ThemeMode) ?? "auto";
   apply(stored);
   return stored;
 }
 
-/** Returns the active --primary CSS variable value, falling back to the dark-mode default. */
 export function getPrimaryColor(): string {
   if (typeof document === "undefined") return "#facc15";
   return (
@@ -37,7 +27,6 @@ export function getPrimaryColor(): string {
   );
 }
 
-/** Advances to the next mode, applies it, and returns the new mode. */
 export function toggleTheme(current: ThemeMode): ThemeMode {
   const next = CYCLE[(CYCLE.indexOf(current) + 1) % CYCLE.length];
   apply(next);

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { TooltipProvider } from "@/lib/tooltip";
+import { TooltipProvider } from "@/lib/context";
+import Layout from "@/components/Layout";
 import "./globals.css";
 
 const datatype = localFont({
@@ -23,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${datatype.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <Layout />
+          {children}
+        </TooltipProvider>
       </body>
     </html>
   );

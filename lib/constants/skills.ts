@@ -1,10 +1,8 @@
 import type { HexItem } from "@/lib/types";
 
-// ─── Skills ───────────────────────────────────────────────────────────────────
-
-const SKILLS: HexItem[] = [
+export const SKILLS: HexItem[] = [
   {
-    id: "ANSIBLE",
+    id: "ansible",
     name: "Ansible",
     description:
       "One of the most powerful tools for systems administrators. Deploying, provisioning, and managing infrastructure is made easy using YAML playbooks. I have used playbooks to spin up hosting environments for internal use.",
@@ -14,7 +12,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "APACHE",
+    id: "apache",
     name: "Apache HTTP Server",
     description:
       "Most commonly used in shared hosting environments, my experience with Apache HTTP Server includes configuring .htaccess files for URL rewriting, access control, and performance optimizations, as well as managing virtual hosts.",
@@ -24,7 +22,7 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "BEAVER",
+    id: "beaver-builder",
     name: "Beaver Builder",
     description:
       "I have been worked extensively with Beaver Builder, an industry-leading WordPress page builder plugin with a visual drag-and-drop interface, for more than 5 years. My work includes the full Beaver Builder ecosystem: core plugin, Beaver Themer, and child theme framework.",
@@ -32,7 +30,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "CSS",
+    id: "css",
     name: "Cascading Style Sheets",
     description:
       "CSS is one of my favorite web development disciplines as it gives the web its flavor. I have extensive experience with tried and true techniques: cross-browser compatibility, efficient selectors, CSS Grid, Flexbox, variables, and more. The specification is always evolving and I look forward to rolling out new features as they are adopted.",
@@ -42,7 +40,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "GSAP",
+    id: "gsap",
     name: "Greensock Animation Platform",
     description:
       "A powerful JS library for creating high-performance, complex, and cross-browser animations. My experience with GSAP has mostly been limited to enhancing static webpages with interactive animation elements, but this tool is capable of so much more. Whenever the opportunity to elevate a project with animation presents itself, GSAP is my go-to solution.",
@@ -52,7 +50,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "GH",
+    id: "github",
     name: "Github",
     description:
       "Github is the preferred source code repository platform and has evolved over the years to include a wide range of features. My experience just barely scratches the surface of what Github can do, but I have been putting the effort of learning more about how to improve my workflow with Actions, Copilot, and Codespaces.",
@@ -62,7 +60,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "HTML",
+    id: "html",
     name: "HTML",
     description: "The foundational language of browsers. Not much else to say.",
     type: "skills",
@@ -71,7 +69,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "In",
+    id: "indesign",
     name: "Indesign",
     description:
       "My knowledge of Indesign is primarily focused on adapting existing visual elements for the web: Fine-tuning anchor points, cleaning up any artifacts, and optimizing designs for use in webfonts or animations.",
@@ -79,7 +77,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "JS",
+    id: "javascript",
     name: "JavaScript",
     description:
       "One of the most controversial scripting languages and the backbone of the interactive web. Manipulating the DOM, handling events, and adding effects that CSS hasn't caught up with yet are some of the examples of how I have used JS.",
@@ -89,7 +87,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "jQ",
+    id: "jquery",
     name: "jQuery",
     description:
       "A once ubiquitous extension of JavaScript that used to make DOM manipulation and event handling easier across browsers. It is still used in legacy projects and WordPress, and I have had to go back and rework jQuery code to be up to date with the best practices.",
@@ -99,7 +97,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "JSON",
+    id: "json",
     name: "JSON",
     description:
       "A lightweight data-interchange format that is the gold standard of modern APIs and data storage.",
@@ -109,7 +107,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "LH",
+    id: "lighthouse",
     name: "Lighthouse",
     description:
       "Essential tool for auditing site performance, accessibility, and best SEO practices. ",
@@ -119,7 +117,7 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "MYSQL",
+    id: "mysql",
     name: "MySQL",
     description: "Relational database management system",
     type: "skills",
@@ -137,8 +135,8 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "LINUX",
-    name: "*nix",
+    id: "linux",
+    name: "Linux",
     description: "Unix-like operating systems",
     type: "skills",
     accent: "#FCC624",
@@ -146,7 +144,7 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "NODE",
+    id: "nodejs",
     name: "NodeJS",
     description: "JavaScript runtime environment",
     type: "skills",
@@ -155,14 +153,14 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "Ps",
+    id: "photoshop",
     name: "Photoshop",
     description: "Image editing software",
     type: "skills",
     level: "knowledgeable",
   },
   {
-    id: "PHP",
+    id: "php",
     name: "PHP",
     description: "Server-side scripting language",
     type: "skills",
@@ -171,7 +169,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "PY",
+    id: "python",
     name: "Python",
     description: "High-level programming language",
     type: "skills",
@@ -180,7 +178,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "TS",
+    id: "typescript",
     name: "TypeScript",
     description: "Superset of JavaScript with static typing",
     type: "skills",
@@ -189,7 +187,7 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "NJS",
+    id: "nextjs",
     name: "NextJS",
     description: "React framework for server-rendered applications",
     type: "skills",
@@ -198,7 +196,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "PSQL",
+    id: "postgresql",
     name: "PostgreSQL",
     description: "Relational database management system",
     type: "skills",
@@ -207,7 +205,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "GATSBY",
+    id: "gatsby",
     name: "Gatsby",
     description: "React-based framework for building static websites",
     type: "skills",
@@ -216,7 +214,7 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "CLAUDE",
+    id: "claude",
     name: "Claude",
     description: "AI assistant developed by Anthropic",
     type: "skills",
@@ -225,7 +223,7 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "REACT",
+    id: "react",
     name: "React",
     description: "JavaScript library for building user interfaces",
     type: "skills",
@@ -234,28 +232,28 @@ const SKILLS: HexItem[] = [
     level: "knowledgeable",
   },
   {
-    id: "MQ",
+    id: "responsive",
     name: "Responsive Web Design",
     description: "Design approach for optimal viewing on various devices",
     type: "skills",
     level: "expert",
   },
   {
-    id: "REST",
-    name: "REST",
+    id: "rest",
+    name: "REST APIs",
     description: "Representational State Transfer",
     type: "skills",
     level: "knowledgeable",
   },
   {
-    id: "SEO",
+    id: "seo",
     name: "SEO",
     description: "Search Engine Optimization",
     type: "skills",
     level: "knowledgeable",
   },
   {
-    id: "SVG",
+    id: "svg",
     name: "Scalable Vector Graphics",
     description: "I really enjoy using SVGs to make high-quality graphics that can be easily scaled, styled, and animated in real-time. Their versatility makes them ideal for pretty much every scenario where graphics are needed on the web. Depending on the project, SVGs can be packaged with the HTML, served as separate files, or converted into an icon font.",
     type: "skills",
@@ -264,7 +262,7 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
   {
-    id: "ROOTS",
+    id: "roots",
     name: "Roots",
     description: "An emerging, open-source WordPress stack that brings much needed modernization to WordPress development. Trellis, Bedrock, and Sage are promising tools and I have been experimenting with them in personal projects but haven't had the opportunity to use them in a production environment yet.",
     type: "skills",
@@ -272,14 +270,14 @@ const SKILLS: HexItem[] = [
     level: "beginner",
   },
   {
-    id: "CODE",
+    id: "vscode",
     name: "VSCode",
     description: "Source code editor",
     type: "skills",
     level: "knowledgeable",
   },
   {
-    id: "WP",
+    id: "wordpress",
     name: "WordPress",
     description: "I have been working with WordPress for my entire professional career and have produced too many projects to list. My knowledge of WordPress covers the full stack: server configuration, database management, and theme and plugin development. WordPress is generally preferred since most clients are familiar with it and I work on tailoring each environment to fit the specifications of the project.",
     type: "skills",
@@ -287,136 +285,3 @@ const SKILLS: HexItem[] = [
     level: "expert",
   },
 ];
-
-// ─── Works ────────────────────────────────────────────────────────────────────
-
-const WORKS: HexItem[] = [
-  {
-    id: "p-alg",
-    name: "Amicus Legal",
-    type: "works",
-    image: "/works/alg.webp",
-    url: "https://www.amicuslegalgroup.com",
-  },
-  {
-    id: "p-bac",
-    name: "Business Aviation",
-    type: "works",
-    image: "/works/bac.jpg",
-    url: "https://www.businessaviationcouncil.org",
-  },
-  {
-    id: "p-bbg",
-    name: "Briskman & Briskman",
-    type: "works",
-    image: "/works/bbg.webp",
-    url: "https://www.briskmanandbriskman.com",
-  },
-  {
-    id: "p-begley",
-    name: "Begley Law Group",
-    type: "works",
-    image: "/works/begley.webp",
-    url: "https://www.begleylawgroup.com",
-  },
-  {
-    id: "p-blg",
-    name: "BLG",
-    type: "works",
-    image: "/works/blg.jpg",
-  },
-  {
-    id: "p-brill",
-    name: "Brill Legal Group",
-    type: "works",
-    image: "/works/brill.webp",
-    url: "https://www.brill-legal.com",
-  },
-  {
-    id: "p-ch",
-    name: "Chandler Ross",
-    type: "works",
-    image: "/works/ch.webp",
-    url: "https://www.chandlerrosslaw.com",
-  },
-  {
-    id: "p-clm",
-    name: "Custom Legal Mktg",
-    type: "works",
-    image: "/works/clm.webp",
-    url: "https://www.customlegalmarketing.com",
-  },
-  {
-    id: "p-hlf",
-    name: "Hale Law Firm",
-    type: "works",
-    image: "/works/hlf.webp",
-    url: "https://www.thehalelawfirm.com",
-  },
-  {
-    id: "p-lhfv",
-    name: "Legal Help Veterans",
-    type: "works",
-    image: "/works/lhfv.webp",
-    url: "https://www.legalhelpforveterans.com",
-  },
-  {
-    id: "p-ljc",
-    name: "LJC",
-    type: "works",
-    image: "/works/ljc.webp",
-  },
-  {
-    id: "p-lk",
-    name: "Littman Krooks",
-    type: "works",
-    image: "/works/lk.webp",
-    url: "https://www.littmankrooks.com",
-  },
-  {
-    id: "p-llf",
-    name: "Leonard Law Firm",
-    type: "works",
-    image: "/works/llf.webp",
-    url: "https://www.lawleonard.com",
-  },
-  {
-    id: "p-mpl",
-    name: "MyPhillyLawyer",
-    type: "works",
-    image: "/works/mpl.webp",
-    url: "https://www.myphillylawyer.com",
-  },
-  {
-    id: "p-mpp",
-    name: "Melaragno Placidi",
-    type: "works",
-    image: "/works/mpp.webp",
-    url: "https://www.erieinjuryattorney.com",
-  },
-  {
-    id: "p-sa",
-    name: "Strong Advocates",
-    type: "works",
-    image: "/works/sa.webp",
-    url: "https://www.strongadvocates.com",
-  },
-  {
-    id: "p-slf",
-    name: "Schuelke Law",
-    type: "works",
-    image: "/works/slf.webp",
-    url: "https://www.civtrial.com",
-  },
-  {
-    id: "p-spc",
-    name: "Sommers Schwartz",
-    type: "works",
-    image: "/works/spc.webp",
-    url: "https://www.sommerspc.com",
-  },
-];
-
-// ─── Combined Export ──────────────────────────────────────────────────────────
-
-export const PORTFOLIO_ITEMS: HexItem[] = [...SKILLS, ...WORKS];

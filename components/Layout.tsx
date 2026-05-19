@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { Filter, HexItem, ThemeMode } from "@/lib/types";
-import { THEME_LABELS, initTheme, toggleTheme } from "@/lib/theme";
-import { useTooltip } from "@/lib/tooltip";
+import Link from "next/link";
+import type { Filter, ThemeMode } from "@/lib/types";
+import { THEME_LABELS } from "@/lib/constants";
+import { initTheme, toggleTheme, buildContactLinks } from "@/lib/client";
+import { useNavigation } from "@/lib/hooks";
+import { useTooltip } from "@/lib/context";
 import Portfolio from "@/components/Portfolio";
 import Popup from "@/components/Popup";
 import {
@@ -17,10 +20,9 @@ import {
   Menu,
 } from "@/components/SVG";
 
-export default function Home() {
-  const [filter, setFilter] = useState<Filter>("all");
+export default function Layout() {
+  const { filter, selectedItem, navigate } = useNavigation();
   const [loading, setLoading] = useState(true);
-  const [selectedItem, setSelectedItem] = useState<HexItem | null>(null);
   const [bioVisible, setBioVisible] = useState(false);
   const [helpVisible, setHelpVisible] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("auto");
@@ -31,55 +33,10 @@ export default function Home() {
 
   useEffect(() => {
     setTheme(initTheme());
-
-    const cvPath =
-      "t" +
-      "o" +
-      "r" +
-      "r" +
-      "e" +
-      "s" +
-      "_" +
-      "j" +
-      "u" +
-      "s" +
-      "t" +
-      "i" +
-      "n" +
-      "_" +
-      "c" +
-      "v" +
-      "." +
-      "p" +
-      "d" +
-      "f";
-    setCvLink(cvPath);
-
-    const protocol = "m" + "a" + "i" + "l" + "t" + "o:";
-    const user = "m" + "e";
-    const domain =
-      "j" +
-      "u" +
-      "s" +
-      "t" +
-      "i" +
-      "n" +
-      "t" +
-      "o" +
-      "r" +
-      "r" +
-      "e" +
-      "s" +
-      "." +
-      "c" +
-      "o" +
-      "m";
-    setEmailLink(protocol + user + "@" + domain);
-
-    const waPrefix = "https://" + "wa" + ".me/";
-    const waNumber =
-      "+" + "3" + "4" + "6" + "0" + "4" + "0" + "0" + "7" + "1" + "7" + "8";
-    setWhatsappLink(waPrefix + waNumber);
+    const links = buildContactLinks();
+    setCvLink(links.cv);
+    setEmailLink(links.email);
+    setWhatsappLink(links.whatsapp);
   }, []);
 
   function handleThemeToggle(): void {
@@ -87,14 +44,14 @@ export default function Home() {
   }
 
   return (
-    <main className="relative h-screen bg-background overflow-hidden">
+    <main className="relative h-dvh bg-background overflow-hidden">
       <div className="absolute inset-0">
         <Portfolio
           filter={filter}
           theme={theme}
           selectedItem={selectedItem}
           onLoadingChange={setLoading}
-          onSelectedChange={setSelectedItem}
+          onSelectedChange={navigate}
         />
       </div>
 
@@ -156,7 +113,6 @@ export default function Home() {
         maxWidth="600px"
       >
         <div className="flex flex-col sm:flex-row gap-6 p-6">
-          {/* Photo Left */}
           <div className="shrink-0 w-full sm:w-60">
             <img
               src="/me.jpg"
@@ -164,7 +120,6 @@ export default function Home() {
               className="w-full h-auto rounded-md object-cover"
             />
           </div>
-          {/* Text Right */}
           <div className="flex-1 space-y-3">
             <div className="flex flex-col items-start justify-between">
               <h2 className="text-xl sm:text-2xl font-bold text-primary leading-tight">
@@ -186,7 +141,7 @@ export default function Home() {
 
       {/* BRAND */}
       {!loading && (
-        <div className="absolute top-4 left-4 md:top-6 md:left-6 pointer-events-auto">
+        <div className="absolute top-4 left-4 right-4 sm:right-auto md:top-6 md:left-6 pointer-events-auto">
           <div className="flex flex-row items-center gap-2 px-4 py-3 bg-surface/80 backdrop-blur-sm border-t border-border shadow-lg">
             <button
               onClick={() => setBioVisible(!bioVisible)}
@@ -202,9 +157,9 @@ export default function Home() {
             </button>
             <div className="flex gap-1">
               {(["all", "skills", "works"] as Filter[]).map((f) => (
-                <button
+                <Link
                   key={f}
-                  onClick={() => setFilter(f)}
+                  href={f === "all" ? "/" : `/${f}`}
                   className={`px-3 py-1.5 text-sm font-medium capitalize transition-all cursor-pointer ${
                     filter === f
                       ? "bg-primary text-surface shadow-sm"
@@ -213,7 +168,7 @@ export default function Home() {
                   title={`Show ${f === "all" ? "all items" : f} in portfolio`}
                 >
                   {f}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -222,7 +177,7 @@ export default function Home() {
 
       {/* ICONS */}
       {!loading && (
-        <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 pointer-events-auto">
+        <div className="absolute bottom-4 right-4 left-4 sm:left-auto md:bottom-6 md:right-6 pointer-events-auto">
           <div className="flex flex-row items-center gap-2 px-4 py-3 bg-surface/80 backdrop-blur-sm border-t border-border shadow-lg">
             <div className="flex gap-3">
               <a
@@ -318,7 +273,7 @@ export default function Home() {
       {/* SELECTED ITEM */}
       <Popup
         isOpen={!!selectedItem}
-        onClose={() => setSelectedItem(null)}
+        onClose={() => navigate(null)}
         maxWidth="600px"
       >
         {selectedItem && (
