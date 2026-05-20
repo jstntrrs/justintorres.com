@@ -1,8 +1,10 @@
 import { SKILLS, WORKS } from "@/lib/constants";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return [
-    { filter: [] },
+    { filter: undefined },
     { filter: ["skills"] },
     { filter: ["works"] },
     ...SKILLS.map((s) => ({ filter: ["skills", s.id] })),

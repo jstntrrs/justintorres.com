@@ -42,16 +42,12 @@ export default function Popup({
       className="fixed inset-0 z-40 flex items-center justify-center"
       onClick={onClose}
     >
-      {/* Blur background overlay */}
       <div className="absolute inset-0 bg-background/10 backdrop-blur-sm" />
-
-      {/* Content */}
       <div
         className="relative z-50 w-[90%] max-h-[80vh] bg-surface/95 backdrop-blur-sm border border-primary shadow-2xl overflow-auto"
         style={{ maxWidth }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button — sticky so it stays visible while content scrolls */}
         <div className="sticky top-0 z-10 flex justify-end pointer-events-none">
           <button
             onClick={onClose}

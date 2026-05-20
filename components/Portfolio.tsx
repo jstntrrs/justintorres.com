@@ -33,10 +33,14 @@ import {
   updateHexPhysics,
   createPortfolioHex,
   createQuoteHex,
+  createItemTexture,
 } from "@/lib/client";
 import { useTooltip } from "@/lib/context";
 
 type ThreeModule = typeof THREE;
+
+const threePromise = import("three");
+const orbitPromise = import("three/examples/jsm/controls/OrbitControls.js");
 
 const PORTFOLIO_ITEMS = [...SKILLS, ...WORKS];
 
@@ -163,9 +167,8 @@ export default function Portfolio({
     const cleanups: Array<() => void> = [];
 
     (async () => {
-      const three: ThreeModule = await import("three");
-      const { OrbitControls } =
-        await import("three/examples/jsm/controls/OrbitControls.js");
+      const three: ThreeModule = await threePromise;
+      const { OrbitControls } = await orbitPromise;
 
       if (cancelled) return;
 
@@ -238,19 +241,6 @@ export default function Portfolio({
       baseCellSizeRef.current = cellSize;
       meshScaleRef.current = 1;
 
-      const uniqueImages = [
-        ...new Set(
-          shuffledItems
-            .map((item) => item.image)
-            .filter((img): img is string => Boolean(img)),
-        ),
-      ];
-      await Promise.all(
-        uniqueImages.map(async (image) => {
-          texCtx.images.set(image, await loadImage(image, primaryColor));
-        }),
-      );
-
       if (cancelled) return;
 
       const hexGeometry = createHexGeometry(three, cellSize);
@@ -279,6 +269,29 @@ export default function Portfolio({
       hexesRef.current = hexes;
       refitLayout(filterRef.current);
       onLoadingChange(false);
+
+      // Load images progressively and update textures as they arrive
+      const uniqueImages = [
+        ...new Set(
+          shuffledItems
+            .map((item) => item.image)
+            .filter((img): img is string => Boolean(img)),
+        ),
+      ];
+      uniqueImages.forEach(async (image) => {
+        const img = await loadImage(image, primaryColor);
+        if (cancelled || !img) return;
+        texCtx.images.set(image, img);
+        // Update textures for hexes that use this image
+        for (const hex of hexes) {
+          if (hex.item.image === image) {
+            const mat = hex.mesh.material as THREE.MeshBasicMaterial;
+            mat.map?.dispose();
+            mat.map = createItemTexture(hex.item, texCtx);
+            mat.needsUpdate = true;
+          }
+        }
+      });
 
       const pointer = new three.Vector2(-9999, -9999);
       const raycaster = new three.Raycaster();

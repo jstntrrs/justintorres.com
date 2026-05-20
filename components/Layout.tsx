@@ -39,6 +39,17 @@ export default function Layout() {
     setWhatsappLink(links.whatsapp);
   }, []);
 
+  useEffect(() => {
+    const el = document.getElementById("ssr-loading");
+    if (el) {
+      if (loading) {
+        el.style.display = "grid";
+      } else {
+        el.style.display = "none";
+      }
+    }
+  }, [loading]);
+
   function handleThemeToggle(): void {
     setTheme(toggleTheme(theme));
   }
@@ -54,25 +65,6 @@ export default function Layout() {
           onSelectedChange={navigate}
         />
       </div>
-
-      {/* LOADING */}
-      {loading && (
-        <div className="absolute inset-0 grid place-items-center pointer-events-none">
-          <div className="flex flex-col items-center gap-4">
-            <div className="hex-container w-60 h-64">
-              <div className="hex-tile" />
-              <div className="hex-inner-inset">
-                <img
-                  src="/me.gif"
-                  alt="Loading"
-                  className="size-full object-cover"
-                />
-              </div>
-            </div>
-            <h4 className="text-lg font-bold text-primary">Loading...</h4>
-          </div>
-        </div>
-      )}
 
       {/* HELP POPUP */}
       <Popup
@@ -314,7 +306,7 @@ export default function Layout() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1 text-sm font-medium bg-primary text-surface px-3 py-1.5 hover:opacity-90 transition-opacity cursor-pointer"
               >
-                <span>Visit ↗</span>
+                <span>{selectedItem.url} ↗</span>
               </a>
             )}
           </div>
